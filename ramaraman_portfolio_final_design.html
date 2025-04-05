@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ramaraman Portfolio Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Decorative input background style */
+    input, select {
+      background: linear-gradient(145deg, #f0f0f0, #ffffff);
+      box-shadow: inset 2px 2px 5px #d1d1d1, inset -2px -2px 5px #ffffff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    input:focus, select:focus {
+      background: #e6f7ff;
+      border-color: #66afe9;
+      box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+    }
+
+    :root {
+      --bg-color: linear-gradient(135deg, #dbe6f6, #c5796d);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-color);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      text-align: center;
+      padding: 30px 10px 10px;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      color: #222;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      font-style: italic;
+      font-size: 1em;
+      color: #444;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      margin-top: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .btn {
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #388e3c;
+    }
+
+    .portfolio {
+      background-color: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      margin: 30px auto 10px;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .portfolio h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2e2e2e;
+    }
+
+    .portfolio p {
+      font-size: 1em;
+      margin: 8px 0;
+      line-height: 1.4;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9em;
+      color: #444;
+      margin-top: auto;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 600px) {
+      form, .portfolio {
+        margin: 10px;
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Ramaraman Portfolio Generator</h1>
+    <p>Developed by Ramaraman and Sonakshi</p>
+  </header>
+
+  <form id="portfolioForm">
+    <label>Select Theme:
+      <select id="themeSelector" onchange="changeTheme()">
+        <option value="default">Classic</option>
+        <option value="coolblue">Cool Blue</option>
+        <option value="sunset">Sunset Vibes</option>
+        <option value="mint">Mint Fresh</option>
+      </select>
+    </label>
+    <label>Name: <input type="text" id="name" required></label>
+    <label>Branch: <input type="text" id="branch" required></label>
+    <label>Year: <input type="text" id="year" required></label>
+    <label>College: <input type="text" id="college" required></label>
+    <label>Age: <input type="number" id="age" required></label>
+    <label>Roll No.: <input type="text" id="roll" required></label>
+    <label>Father's Name: <input type="text" id="father" required></label>
+    <label>Mother's Name: <input type="text" id="mother" required></label>
+    <button type="button" class="btn" onclick="generatePortfolio()">Generate Portfolio</button>
+  </form>
+
+  <div id="output" class="portfolio" style="display: none;"></div>
+  <button id="downloadBtn" class="btn" style="display: none;" onclick="downloadPDF()">Download as PDF</button>
+
+  <div class="footer">© 2025 Developed by Ramaraman and Sonakshi</div>
+
+  <script>
+    function changeTheme() {
+      const theme = document.getElementById("themeSelector").value;
+      let bg;
+
+      switch (theme) {
+        case "coolblue":
+          bg = "linear-gradient(135deg, #74ebd5, #ACB6E5)";
+          break;
+        case "sunset":
+          bg = "linear-gradient(135deg, #f12711, #f5af19)";
+          break;
+        case "mint":
+          bg = "linear-gradient(135deg, #a8edea, #fed6e3)";
+          break;
+        default:
+          bg = "linear-gradient(135deg, #dbe6f6, #c5796d)";
+      }
+
+      document.documentElement.style.setProperty('--bg-color', bg);
+    }
+
+    function generatePortfolio() {
+      const name = document.getElementById("name").value;
+      const branch = document.getElementById("branch").value;
+      const year = document.getElementById("year").value;
+      const college = document.getElementById("college").value;
+      const age = document.getElementById("age").value;
+      const roll = document.getElementById("roll").value;
+      const father = document.getElementById("father").value;
+      const mother = document.getElementById("mother").value;
+
+      const output = document.getElementById("output");
+      output.style.display = "block";
+      output.innerHTML = `
+        <h2>${name}'s Portfolio</h2>
+        <p><strong>Branch:</strong> ${branch}</p>
+        <p><strong>Year:</strong> ${year}</p>
+        <p><strong>College:</strong> ${college}</p>
+        <p><strong>Age:</strong> ${age}</p>
+        <p><strong>Roll No.:</strong> ${roll}</p>
+        <p><strong>Father's Name:</strong> ${father}</p>
+        <p><strong>Mother's Name:</strong> ${mother}</p>
+      `;
+
+      document.getElementById("downloadBtn").style.display = "inline-block";
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("output");
+      html2pdf().from(element).save("portfolio.pdf");
+    }
+  </script>
+
+</body>
+</html>
